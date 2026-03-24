@@ -1,1 +1,39 @@
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
+<h2>Projects</h2>
+
+<button onclick="createProject()">Add Project</button>
+
+<div id="projectList"></div>
+
+<script src="js/supabaseClient.js"></script>
+
+<script>
+async function loadProjects(){
+
+ const { data } = await supabaseClient
+    .from('projects')
+    .select('*');
+
+ let html = ""
+
+ data.forEach(p=>{
+   html += `
+     <div>
+       <h3>${p.project_name}</h3>
+       <button onclick="openDashboard('${p.project_id}')">
+          Open
+       </button>
+     </div>
+   `
+ })
+
+ document.getElementById("projectList").innerHTML = html
+}
+
+loadProjects()
+
+function openDashboard(id){
+ location.href = "dashboard.html?project=" + id
+}
+</script>
